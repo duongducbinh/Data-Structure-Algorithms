@@ -1,47 +1,35 @@
-class Graph {
-    constructor() {
-        this.numberOfNodes = 0;
-        this.adjacentList = {};
+const number = [99, 44 , 6, 2, 1, 5, 63, 87, 283, 4, 0];
 
+function mergeSort(array) {
+    if(array.length === 1){
+        return array;
     }
-    addVertex(node) {
-        this.adjacentList[node] = [];
-        this.numberOfNodes++;
-    }
-    addEdge(node1, node2) {
-        // undirected Graph 
-        this.adjacentList[node1].push(node2);
-        this.adjacentList[node2].push(node1);
-    }
-    showConnections() {
-        const allNodes = Object.keys(this.adjacentList);
-        for (let node of allNodes) {
-            let nodeConnections = this.adjacentList[node];
-            let connections = "";
-            let vertex;
-            for (vertex of nodeConnections) {
-                connections += vertex + " ";
-            }
-            console.log(node + "-->" + connections);
-        }
-    }
+    const left = array.slice(0, Math.floor(array.length /2));
+    const right = array.slice(Math.floor(array.length /2));
+    return merge(
+        mergeSort(left),
+        mergeSort(right)
+    )
 }
 
-const myGraph = new Graph();
-myGraph.addVertex('0');
-myGraph.addVertex('1');
-myGraph.addVertex('2');
-myGraph.addVertex('3');
-myGraph.addVertex('4');
-myGraph.addVertex('5');
-myGraph.addVertex('6');
-myGraph.addEdge('3', '1');
-myGraph.addEdge('3', '4');
-myGraph.addEdge('4', '2');
-myGraph.addEdge('4', '5');
-myGraph.addEdge('1', '2');
-myGraph.addEdge('1', '0');
-myGraph.addEdge('0', '2');
-myGraph.addEdge('6', '5');
-myGraph.showConnections();
-console.log(myGraph);
+function merge(left, right){
+    const result = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
+
+    while(leftIndex < left.length && rightIndex < right.length){
+        if(left[leftIndex] <= right[rightIndex]){
+            result.push(left[leftIndex]);
+            leftIndex++ ;
+        } else {
+            result.push(right[rightIndex]);
+            rightIndex++ ;
+        }
+    }
+
+    return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+    
+}
+
+const answer = mergeSort(number);
+console.log(answer);
